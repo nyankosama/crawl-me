@@ -59,7 +59,6 @@ class CrawlerManager(object):
         index = 1
         count = 1
         picNum = len(self.urlList)
-        syslog("picNum=%s" % (picNum), LOG_DEBUG)
         splitNum = getShardingConf(picNum)[0]
         
         while index <= picNum:
