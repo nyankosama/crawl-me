@@ -86,6 +86,6 @@ class CrawlerManager(object):
         syslog('average ' + str(average) + 's per image', LOG_INFO)
 
     def stopCrawl(self):
-        #TODO not surported
+        #TODO not surported yet
         pass
 

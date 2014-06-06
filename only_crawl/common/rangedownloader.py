@@ -2,6 +2,7 @@ import urllib2
 import threading
 import socket
 import os
+import copy
 from utils import *
 
 class RangeDownloadThread(threading.Thread):
@@ -45,7 +46,7 @@ class RangeDownloader(object):
             req = urllib2.Request(url)
             req.headers['Range'] = 'bytes=%s-%s' % (beginByte, endByte)
             #print "start:%s, end:%s" % (beginByte, endByte)
-            th = RangeDownloadThread(beginByte, self.opener, req, file)
+            th = RangeDownloadThread(beginByte, copy.copy(self.opener), req, file)
             self.downloadThreadList.append(th)
             th.start()
             beginByte += shardingSize

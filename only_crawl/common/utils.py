@@ -3,10 +3,15 @@ import socket
 import os
 import threading
 
-def urlopenWithRetry(opener, url, timeout = 10, retryTime = 3):
+def urlopenWithRetry(opener, request, timeout=10, retryTime=3):
+    if isinstance(request, urllib2.Request):
+        url = request.get_full_url()
+    else:
+        url = request
+
     while retryTime >= 0 :
         try:
-            resp = opener.open(url, timeout=timeout)
+            resp = opener.open(request, timeout=timeout)
             return resp.read()
         except socket.timeout, e1:
             retryTime -= 1 
@@ -20,7 +25,7 @@ def urlopenWithRetry(opener, url, timeout = 10, retryTime = 3):
 def upDiv(a, b):
     return (a+b-1) / b
 
-def getShardingConf(size, maxDownloadCount=20, perferedSplitNum=4):
+def getShardingConf(size, maxDownloadCount=40, perferedSplitNum=3):
     tmpCount = upDiv(size, perferedSplitNum)
     if tmpCount > maxDownloadCount:
         tmpCount = maxDownloadCount
