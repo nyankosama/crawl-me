@@ -1,16 +1,17 @@
 import urllib2
-from pageBasedHandler import PageBasedHandler
+from pageBasedHandler import *
 from ..common.utils import *
 from pyquery import PyQuery as pq
 
 class GamerskyHandler(PageBasedHandler):
-    def getPageUrl(self, baseUrl, opener, beginPage, endPage):
+    #def getPageUrl(self, baseUrl, opener, beginPage, endPage):
+    def getPageUrl(self, opener, paraConf):
         urlList = list()
-        for page in range(self.args.beginPage, self.args.endPage + 1):
+        for page in range(paraConf.beginPage, paraConf.endPage + 1):
             if page == 1:
-                crawlUrl = baseUrl
+                crawlUrl = paraConf.url
             else:
-                crawlUrl = baseUrl[0: baseUrl.index('.shtml')] + "_" + str(page) + ".shtml"
+                crawlUrl = paraConf.url[0: paraConf.url.index('.shtml')] + "_" + str(page) + ".shtml"
             urlList.append(crawlUrl)
         return urlList        
 
@@ -40,3 +41,11 @@ class GamerskyHandler(PageBasedHandler):
     def initOpener(self):
         self.opener = urllib2.build_opener()
         return self.opener
+
+    def initPara(self, parser):
+        parser.add_argument('url', help='your url to crawl')
+        parser.add_argument('savePath', help='the path where the imgs ars saved')
+        parser.add_argument('beginPage', help='the page where we start crawling', type=int)
+        parser.add_argument('endPage', help='the page where we end crawling', type=int)
+        args = parser.parse_args()
+        return PageBasedConf(args.url, args.savePath, args.beginPage, args.endPage)

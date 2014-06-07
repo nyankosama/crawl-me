@@ -2,6 +2,7 @@ import sys
 import socket
 import os
 import threading
+import urllib2
 
 def urlopenWithRetry(opener, request, timeout=10, retryTime=3):
     if isinstance(request, urllib2.Request):

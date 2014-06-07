@@ -6,6 +6,7 @@ from only_crawl.common.crawlercore import CrawlerManager
 
 availableModule = [
         "gamersky",
+        "pixiv",
         ]
 
 def printHelp(parser):
@@ -36,8 +37,8 @@ if __name__ == "__main__":
 
     class_ = getattr(module, pluginName[0].upper() + pluginName[1:] + "Handler")
     plugin = class_()
-    args = plugin.initPara(parser)
+    conf = plugin.initPara(parser)
     opener = plugin.initOpener()
-    urlList = plugin.getUrlList()
-    manager = CrawlerManager(args.savePath, opener, urlList) 
+    urlList = plugin.getUrlList(conf)
+    manager = CrawlerManager(conf.savePath, opener, urlList) 
     manager.startCrawl()

@@ -1,9 +1,15 @@
 import threading
 import urllib2
 import copy
-from baseHandler import BaseHandler
+from baseHandler import *
 from ..common.utils import *
 from ..third_party.abc import ABCMeta, abstractmethod
+
+class PageBasedConf(BaseConf):
+    def __init__(self, url, savePath, beginPage = None, endPage = None):
+        BaseConf.__init__(self, url, savePath)
+        self.beginPage = beginPage
+        self.endPage = endPage
 
 class PictureUrlThread(threading.Thread):
     def __init__(self, threadName, pageUrl, handler):
@@ -20,8 +26,8 @@ class PictureUrlThread(threading.Thread):
 
 #abstruct base class
 class PageBasedHandler(BaseHandler):
-    def getUrlList(self):
-        pageUrlList = self.getPageUrl(self.args.url, copy.copy(self.opener), self.args.beginPage, self.args.endPage)
+    def getUrlList(self, conf):
+        pageUrlList = self.getPageUrl(copy.copy(self.opener), conf)
         pageNum = len(pageUrlList)
         threadList = list()
         for index, url in enumerate(pageUrlList):
@@ -38,15 +44,7 @@ class PageBasedHandler(BaseHandler):
 
     
     @abstractmethod
-    def getPageUrl(self, baseUrl, opener, beginPage, endPage):pass
+    def getPageUrl(self, opener, paraConf):pass
 
     @abstractmethod
     def getPictureUrl(self, pageUrl, opener):pass
-
-    def initPara(self, parser):
-        parser.add_argument('url', help='your url to crawl')
-        parser.add_argument('savePath', help='the path where the imgs ars saved')
-        parser.add_argument('beginPage', help='the page where we start crawling', type=int)
-        parser.add_argument('endPage', help='the page where we end crawling', type=int)
-        self.args = parser.parse_args()
-        return self.args

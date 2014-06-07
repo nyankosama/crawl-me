@@ -1,8 +1,16 @@
 import urllib2
 import sys
+import argparse
+import cookielib
+import urllib
 from pageBasedHandler import PageBasedHandler
 from ..common.utils import *
 from pyquery import PyQuery as pq
+
+
+def getUrlFromId(memberID):
+    url = 'http://www.pixiv.net/member_illust.php?id=' + str(memberID)
+    return url
 
 class PixivHandler(PageBasedHandler):
     def getPageUrl(self, baseUrl, opener, beginPage, endPage):
@@ -73,3 +81,11 @@ class PixivHandler(PageBasedHandler):
         urlopenWithRetry(opener, request)
         syslog("login completed!", LOG_INFO)
         return opener
+
+    def initPara(self, parser):
+        parser.add_argument('authorId', help='the author id you want to crawl')
+        parser.add_argument('savePath', help='the path where the imgs ars saved')
+        parser.add_argument('pixivId', help='your pixiv login id')
+        parser.add_argument('password', help='your pixiv login password')
+        self.args = parser.parse_args()
+        return self.args
