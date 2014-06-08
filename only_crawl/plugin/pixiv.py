@@ -3,7 +3,7 @@ import sys
 import argparse
 import cookielib
 import urllib
-from pageBasedHandler import PageBasedHandler
+from pageBasedHandler import *
 from ..common.utils import *
 from pyquery import PyQuery as pq
 
@@ -13,11 +13,11 @@ def getUrlFromId(memberID):
     return url
 
 class PixivHandler(PageBasedHandler):
-    def getPageUrl(self, baseUrl, opener, beginPage, endPage):
+    def getPageUrl(self, opener, conf):
         urlList = list()
-        htmlContent = urlopenWithRetry(opener, baseUrl)
+        htmlContent = urlopenWithRetry(opener, conf["url"])
         if htmlContent == None:
-            syslog("pixiv plugin pageCrawl init fail! timeout retry too many times, url=%s" % (baseUrl), LOG_ERROR)
+            syslog("pixiv plugin pageCrawl init fail! timeout retry too many times, url=%s" % (conf["url"]), LOG_ERROR)
             sys.exit(1)
         d = pq(htmlContent)
         pageLi = d(".page-list").eq(0)("li")
@@ -25,9 +25,9 @@ class PixivHandler(PageBasedHandler):
         if size == 0:
             size = 1
         syslog("total " + str(size) + " pages", LOG_INFO)
-        urlList.append(url)
+        urlList.append(conf["url"])
         for page in range(2, size + 1):
-            urlList.append(url + "&p=" + str(page))
+            urlList.append(conf["url"] + "&p=" + str(page))
         return urlList        
 
     def getPictureUrl(self, pageUrl, opener):
@@ -47,7 +47,7 @@ class PixivHandler(PageBasedHandler):
             imgID = href[href.rfind("=") + 1:]
             bigImgUrl = "http://www.pixiv.net/member_illust.php?mode=big&illust_id=" + imgID
             syslog("opening " + bigImgUrl, LOG_INFO) 
-            bigImgContent = urlopenWithRetry(self.urlopener, bigImgUrl)
+            bigImgContent = urlopenWithRetry(opener, bigImgUrl)
             if bigImgContent == None:
                 syslog("retry too many times at url=" + bigImgUrl, LOG_ERROR)
 
@@ -59,7 +59,7 @@ class PixivHandler(PageBasedHandler):
                 urlList.append(imgUrl)
         return urlList
          
-    def initOpener(self):
+    def initOpener(self, conf):
         cookieJar = cookielib.CookieJar()
         cookie = urllib2.HTTPCookieProcessor(cookieJar)
         opener = urllib2.build_opener(cookie)
@@ -69,8 +69,8 @@ class PixivHandler(PageBasedHandler):
         postData = {
                 "mode":"login",
                 "return_to":"/",
-                "pixiv_id":self.args.pixivId,
-                "pass":self.args.password
+                "pixiv_id":conf["pixivId"],
+                "pass":conf["password"]
                 }
         login_headers = {
                 'Referer':'https://www.secure.pixiv.net/login.php',
@@ -80,6 +80,7 @@ class PixivHandler(PageBasedHandler):
         syslog("www.pixiv.net logining!", LOG_INFO)
         urlopenWithRetry(opener, request)
         syslog("login completed!", LOG_INFO)
+        self.opener = opener
         return opener
 
     def initPara(self, parser):
@@ -87,5 +88,10 @@ class PixivHandler(PageBasedHandler):
         parser.add_argument('savePath', help='the path where the imgs ars saved')
         parser.add_argument('pixivId', help='your pixiv login id')
         parser.add_argument('password', help='your pixiv login password')
-        self.args = parser.parse_args()
-        return self.args
+        args = parser.parse_args()
+        return {
+                "url":getUrlFromId(args.authorId),
+                "savePath":args.savePath,
+                "pixivId":args.pixivId,
+                "password":args.password
+                }

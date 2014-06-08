@@ -31,6 +31,7 @@ if __name__ == "__main__":
     try:
         module = dynamicImport("only_crawl.plugin." + pluginName)
     except Exception, e:
+        syslog(str(e), LOG_DEBUG)
         syslog("moudle not found! moudleName:%s" % (pluginName), LOG_ERROR)
         printHelp(parser)
         sys.exit(-1)
@@ -38,7 +39,7 @@ if __name__ == "__main__":
     class_ = getattr(module, pluginName[0].upper() + pluginName[1:] + "Handler")
     plugin = class_()
     conf = plugin.initPara(parser)
-    opener = plugin.initOpener()
+    opener = plugin.initOpener(conf)
     urlList = plugin.getUrlList(conf)
-    manager = CrawlerManager(conf.savePath, opener, urlList) 
+    manager = CrawlerManager(conf["savePath"], opener, urlList) 
     manager.startCrawl()

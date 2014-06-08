@@ -5,12 +5,6 @@ from baseHandler import *
 from ..common.utils import *
 from ..third_party.abc import ABCMeta, abstractmethod
 
-class PageBasedConf(BaseConf):
-    def __init__(self, url, savePath, beginPage = None, endPage = None):
-        BaseConf.__init__(self, url, savePath)
-        self.beginPage = beginPage
-        self.endPage = endPage
-
 class PictureUrlThread(threading.Thread):
     def __init__(self, threadName, pageUrl, handler):
         threading.Thread.__init__(self, name=threadName)

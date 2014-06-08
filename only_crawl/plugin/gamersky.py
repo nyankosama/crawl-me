@@ -7,11 +7,11 @@ class GamerskyHandler(PageBasedHandler):
     #def getPageUrl(self, baseUrl, opener, beginPage, endPage):
     def getPageUrl(self, opener, paraConf):
         urlList = list()
-        for page in range(paraConf.beginPage, paraConf.endPage + 1):
+        for page in range(paraConf["beginPage"], paraConf["endPage"] + 1):
             if page == 1:
-                crawlUrl = paraConf.url
+                crawlUrl = paraConf["url"]
             else:
-                crawlUrl = paraConf.url[0: paraConf.url.index('.shtml')] + "_" + str(page) + ".shtml"
+                crawlUrl = paraConf["url"][0: paraConf["url"].index('.shtml')] + "_" + str(page) + ".shtml"
             urlList.append(crawlUrl)
         return urlList        
 
@@ -38,7 +38,7 @@ class GamerskyHandler(PageBasedHandler):
 
         return urlList
          
-    def initOpener(self):
+    def initOpener(self, conf):
         self.opener = urllib2.build_opener()
         return self.opener
 
@@ -48,4 +48,9 @@ class GamerskyHandler(PageBasedHandler):
         parser.add_argument('beginPage', help='the page where we start crawling', type=int)
         parser.add_argument('endPage', help='the page where we end crawling', type=int)
         args = parser.parse_args()
-        return PageBasedConf(args.url, args.savePath, args.beginPage, args.endPage)
+        return {
+                "url":url,
+                "savePath":savePath,
+                "beginPage":beginPage,
+                "endPage":endPage
+                }

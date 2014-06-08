@@ -6,15 +6,17 @@ import copy
 from utils import *
 
 class RangeDownloadThread(threading.Thread):
-    def __init__(self, startByte, opener, request, file):
+    def __init__(self, startByte, opener, request, file, lock):
         threading.Thread.__init__(self)
         self.startByte =startByte
         self.request = request
-        self.opener = opener
+        self.opener = copy.copy(opener)
         self.file = file
+        self.lock = lock
 
     def run(self):
         rangeContent = urlopenWithRetry(self.opener, self.request)
+        self.lock.acquire()
         self.file.seek(self.startByte)
         if rangeContent is not None:
             self.file.write(rangeContent)
@@ -22,12 +24,14 @@ class RangeDownloadThread(threading.Thread):
         else:
             syslog("error! retry too many times in range:%s" % (startByte), LOG_ERROR)
             self.ret = -1 #download fail
+        self.lock.release()
 
 class RangeDownloader(object):
     def __init__(self, opener):
         self.opener = opener
         self.downloadThreadList = list()
         self.fileList = list()
+        self.lock = threading.Lock()
 
     def rangeDownload(self, url, savePath, partNum = 5):
         self.savePath = savePath
@@ -46,7 +50,7 @@ class RangeDownloader(object):
             req = urllib2.Request(url)
             req.headers['Range'] = 'bytes=%s-%s' % (beginByte, endByte)
             #print "start:%s, end:%s" % (beginByte, endByte)
-            th = RangeDownloadThread(beginByte, copy.copy(self.opener), req, file)
+            th = RangeDownloadThread(beginByte, self.opener, req, file, self.lock)
             self.downloadThreadList.append(th)
             th.start()
             beginByte += shardingSize
@@ -76,4 +80,3 @@ class RangeDownloader(object):
 
     def __sharding(self, fileSize, partNum):
         return upDiv(fileSize, partNum)
-
