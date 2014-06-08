@@ -15,8 +15,7 @@ def urlopenWithRetry(opener, request, timeout=10, retryTime=3):
     while retryTime >= 0 :
         try:
             resp = opener.open(request, timeout=timeout)
-            content = resp.read()
-            return content
+            return resp
         except socket.timeout, e1:
             retryTime -= 1 
             syslog("http timeout, retry again.(retry remains %s) url=%s" % (retryTime, url), LOG_ERROR)
@@ -25,6 +24,24 @@ def urlopenWithRetry(opener, request, timeout=10, retryTime=3):
             syslog(str(Exception) + ":" + str(e2) + ", at url=" + url, LOG_ERROR)
             break
     return None
+
+def resReadWithRetry(res, timeout=10, retryTime=3):
+    if res == None:
+        return None
+    while retryTime >= 0 :
+        try:
+            return res.read()
+        except socket.timeout, e1:
+            retryTime -= 1 
+            syslog("http timeout, retry again.(retry remains %s) url=%s" % (retryTime, url), LOG_ERROR)
+            continue
+        except Exception, e2:
+            syslog(str(Exception) + ":" + str(e2) + ", at url=" + url, LOG_ERROR)
+            break
+    return None
+
+def urlReadWithRetry(opener, request, timeout=10, retryTime=3):
+    return resReadWithRetry(urlopenWithRetry(opener, request, timeout, retryTime), timeout, retryTime)
 
 def upDiv(a, b):
     return (a+b-1) / b

@@ -17,7 +17,7 @@ class GamerskyHandler(PageBasedHandler):
 
     def getPictureUrl(self, pageUrl, opener):
         urlList = list()
-        htmlContent = urlopenWithRetry(opener, pageUrl)
+        htmlContent = urlReadWithRetry(opener, pageUrl)
         if htmlContent == None:
             syslog("GameskyPicIterator init fail at url=" + pageUrl, LOG_ERROR)
         q = pq(htmlContent)

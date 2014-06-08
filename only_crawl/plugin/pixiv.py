@@ -14,7 +14,7 @@ def getUrlFromId(memberID):
 class PixivHandler(PageBasedHandler):
     def getPageUrl(self, opener, conf):
         urlList = list()
-        htmlContent = urlopenWithRetry(opener, conf["url"])
+        htmlContent = urlReadWithRetry(opener, conf["url"])
         if htmlContent == None:
             syslog("pixiv plugin pageCrawl init fail! timeout retry too many times, url=%s" % (conf["url"]), LOG_ERROR)
             sys.exit(1)
@@ -31,7 +31,7 @@ class PixivHandler(PageBasedHandler):
 
     def getPictureUrl(self, pageUrl, opener):
         urlList = list()
-        htmlContent = urlopenWithRetry(opener, pageUrl)
+        htmlContent = urlReadWithRetry(opener, pageUrl)
         if htmlContent == None:
             syslog("pixiv plugin pictureCrawl init fail! timeout retry too many times, url=%s" % (baseUrl), LOG_ERROR)
             return
@@ -46,7 +46,7 @@ class PixivHandler(PageBasedHandler):
             imgID = href[href.rfind("=") + 1:]
             bigImgUrl = "http://www.pixiv.net/member_illust.php?mode=big&illust_id=" + imgID
             syslog("opening " + bigImgUrl, LOG_INFO) 
-            bigImgContent = urlopenWithRetry(opener, bigImgUrl)
+            bigImgContent = urlReadWithRetry(opener, bigImgUrl)
             if bigImgContent == None:
                 syslog("retry too many times at url=" + bigImgUrl, LOG_ERROR)
 

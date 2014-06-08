@@ -13,7 +13,18 @@ class RangeDownloadThread(threading.Thread):
         self.file = file
 
     def run(self):
-        rangeContent = urlopenWithRetry(self.opener, self.request)
+        retryTime = 10
+        self.ret = -1
+        while retryTime >= 0:
+            res = urlopenWithRetry(self.opener, self.request)
+            if res.info().get("Content-Range") != None:
+                break
+            syslog("206 check fail!!!, file=%s, startByte=%s" % (self.file.name, self.startByte), LOG_ERROR)
+            retryTime -= 1
+
+        if retryTime == -1:
+            syslog("rangedownload retryTime = -1, file=%s, startByte=%s" % (self.file.name, self.startByte), LOG_ERROR)
+        rangeContent = resReadWithRetry(res)
         #syslog("part len=%s, startByte=%s, file=%s" % (len(rangeContent), self.startByte, self.file.name))
         #self.contentLen = self.contentLen + len(rangeContent)
         self.file.seek(self.startByte)
@@ -70,9 +81,9 @@ class RangeDownloader(object):
         contentSum = 0;
         for th in self.downloadThreadList:
             th.join()
-            contentSum = contentSum + th.contentLen
+            #contentSum = contentSum + th.contentLen
 
-        syslog("content len=%s, file=%s" % (contentSum, self.savePath), LOG_DEBUG)
+        #syslog("content len=%s, file=%s" % (contentSum, self.savePath), LOG_DEBUG)
         for th in self.downloadThreadList:
             if th.ret != 0:
                 hasError = True
@@ -86,7 +97,7 @@ class RangeDownloader(object):
 
     def __getFileSize(self, url):
         try:
-            res = self.opener.open(url)
+            res = urlopenWithRetry(self.opener, url)
         except urllib2.HTTPError, e:
             syslog("http 404, url=%s" % (url), LOG_INFO)
             return 0
