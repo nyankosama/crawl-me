@@ -41,5 +41,6 @@ if __name__ == "__main__":
     conf = plugin.initPara(parser)
     opener = plugin.initOpener(conf)
     urlList = plugin.getUrlList(conf)
-    manager = CrawlerManager(conf["savePath"], opener, urlList) 
+    syslog("total pictures to crawl:%s" % (len(urlList)))
+    manager = CrawlerManager(conf["savePath"], opener, urlList[:7])
     manager.startCrawl()

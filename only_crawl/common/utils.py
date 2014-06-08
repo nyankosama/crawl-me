@@ -15,7 +15,8 @@ def urlopenWithRetry(opener, request, timeout=10, retryTime=3):
     while retryTime >= 0 :
         try:
             resp = opener.open(request, timeout=timeout)
-            return resp.read()
+            content = resp.read()
+            return content
         except socket.timeout, e1:
             retryTime -= 1 
             syslog("http timeout, retry again.(retry remains %s) url=%s" % (retryTime, url), LOG_ERROR)
