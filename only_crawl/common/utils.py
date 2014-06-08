@@ -33,10 +33,10 @@ def resReadWithRetry(res, timeout=10, retryTime=3):
             return res.read()
         except socket.timeout, e1:
             retryTime -= 1 
-            syslog("http timeout, retry again.(retry remains %s) url=%s" % (retryTime, url), LOG_ERROR)
+            syslog("res read http timeout, retry again.(retry remains %s)" % (retryTime), LOG_ERROR)
             continue
         except Exception, e2:
-            syslog(str(Exception) + ":" + str(e2) + ", at url=" + url, LOG_ERROR)
+            syslog(str(Exception) + ":" + str(e2), LOG_ERROR)
             break
     return None
 
