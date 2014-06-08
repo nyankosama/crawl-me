@@ -2,7 +2,6 @@ import urllib2
 import threading
 import socket
 import os
-import copy
 from utils import *
 
 class RangeDownloadThread(threading.Thread):
@@ -10,7 +9,7 @@ class RangeDownloadThread(threading.Thread):
         threading.Thread.__init__(self)
         self.startByte =startByte
         self.request = request
-        self.opener = copy.copy(opener)
+        self.opener = openerDefaultClone(opener)
         self.file = file
         self.lock = lock
 
@@ -36,9 +35,9 @@ class RangeDownloader(object):
     def rangeDownload(self, url, savePath, partNum = 5):
         self.savePath = savePath
         self.url = url
-        #print url + " part=" + str(partNum) + " download start!"
+        syslog(url + " part=" + str(partNum) + " download start!", LOG_DEBUG)
         fileSize = self.__getFileSize(url)
-        #print "file size=%s" % (fileSize)
+        syslog("file size=%s" % (fileSize), LOG_DEBUG)
         shardingSize = self.__sharding(fileSize, partNum)
         beginByte = 0
         while beginByte < fileSize:
@@ -49,7 +48,7 @@ class RangeDownloader(object):
                 endByte = fileSize - 1
             req = urllib2.Request(url)
             req.headers['Range'] = 'bytes=%s-%s' % (beginByte, endByte)
-            #print "start:%s, end:%s" % (beginByte, endByte)
+            syslog("start:%s, end:%s" % (beginByte, endByte), LOG_DEBUG)
             th = RangeDownloadThread(beginByte, self.opener, req, file, self.lock)
             self.downloadThreadList.append(th)
             th.start()

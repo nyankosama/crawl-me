@@ -49,8 +49,8 @@ class GamerskyHandler(PageBasedHandler):
         parser.add_argument('endPage', help='the page where we end crawling', type=int)
         args = parser.parse_args()
         return {
-                "url":url,
-                "savePath":savePath,
-                "beginPage":beginPage,
-                "endPage":endPage
+                "url":args.url,
+                "savePath":args.savePath,
+                "beginPage":args.beginPage,
+                "endPage":args.endPage
                 }

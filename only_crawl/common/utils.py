@@ -3,6 +3,8 @@ import socket
 import os
 import threading
 import urllib2
+import cookielib
+import copy
 
 def urlopenWithRetry(opener, request, timeout=10, retryTime=3):
     if isinstance(request, urllib2.Request):
@@ -82,3 +84,16 @@ def dynamicImport(name):
     for comp in components[1:]:
         mod = getattr(mod, comp)
     return mod
+
+#default only copy opener's headers and cookiejar'
+def openerDefaultClone(oldOpener, oldCookieJar = None):
+    for handler in oldOpener.handlers:
+        if isinstance(handler, urllib2.HTTPCookieProcessor):
+            oldCookieJar = handler.cookiejar
+    newCookieJar = cookielib.CookieJar()
+    if oldCookieJar != None:
+        newCookieJar._cookies = copy.deepcopy(oldCookieJar._cookies) 
+        newCookieJar._policy = copy.deepcopy(oldCookieJar._policy)
+    newOpener = urllib2.build_opener(urllib2.HTTPCookieProcessor(newCookieJar))
+    newOpener.addheaders = copy.deepcopy(oldOpener.addheaders)
+    return newOpener

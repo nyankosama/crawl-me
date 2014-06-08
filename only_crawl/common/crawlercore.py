@@ -4,7 +4,6 @@ import thread
 import threading
 import signal
 import time
-import copy
 import urllib2
 import socket
 import Queue
@@ -24,7 +23,7 @@ class PictureThread(threading.Thread):
         threading.Thread.__init__(self)
         self.startIndex = startIndex
         self.urlList = urlList
-        self.opener = copy.copy(opener)
+        self.opener = opener
         self.splitNum = splitNum
         self.name = handlerName
         self.savePath = savePath
@@ -88,4 +87,3 @@ class CrawlerManager(object):
     def stopCrawl(self):
         #TODO not surported yet
         pass
-
