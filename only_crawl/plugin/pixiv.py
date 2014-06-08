@@ -7,7 +7,6 @@ from pageBasedHandler import *
 from ..common.utils import *
 from pyquery import PyQuery as pq
 
-
 def getUrlFromId(memberID):
     url = 'http://www.pixiv.net/member_illust.php?id=' + str(memberID)
     return url
