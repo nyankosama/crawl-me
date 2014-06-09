@@ -3,3 +3,9 @@
 
 #swp
 *.swp
+
+#build files
+/build/
+/dist/
+/MANIFEST
+*.egg-info/

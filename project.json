@@ -1,0 +1,14 @@
+{
+    "name":"crawl-me",
+    "author":"Liangrui He",
+    "author_email":"i@nyankosama.com",
+    "url":"https://github.com/nyankosama/crawl-me",
+    "license":"MIT",
+    "version":"0.1.4-dev2",
+
+    "description":"This is a plugin based picture crawler. Now pixiv/gamersky plugin available!",
+    "keywords":"crawler downloader picture pixiv",
+    "console_scripts":[
+        "crawl-me = crawl_me.common.__main__:main" 
+    ]
+}
