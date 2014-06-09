@@ -1,8 +1,8 @@
 import argparse
 import sys
-from only_crawl.common.utils import *
-from only_crawl.plugin import *
-from only_crawl.common.crawlercore import CrawlerManager
+from crawl_me.common.utils import *
+from crawl_me.plugin import *
+from crawl_me.common.crawlercore import CrawlerManager
 
 availableModule = [
         "gamersky",
@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     pluginName = sys.argv[1]
     try:
-        module = dynamicImport("only_crawl.plugin." + pluginName)
+        module = dynamicImport("crawl_me.plugin." + pluginName)
     except Exception, e:
         syslog(str(e), LOG_DEBUG)
         syslog("moudle not found! moudleName:%s" % (pluginName), LOG_ERROR)
