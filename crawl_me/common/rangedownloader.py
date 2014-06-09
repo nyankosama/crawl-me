@@ -13,10 +13,7 @@ class RangeDownloadThread(threading.Thread):
         self.file = file
 
     def run(self):
-        res = self.__checkRangeHeaderSupport()
-        if res == None:
-            self.ret = -1
-        rangeContent = resReadWithRetry(res)
+        rangeContent = self.__checkRangeHeaderSupport()
         self.file.seek(self.startByte)
         if rangeContent is not None:
             self.file.write(rangeContent)
@@ -30,7 +27,13 @@ class RangeDownloadThread(threading.Thread):
         while retryTime >= 0:
             res = urlopenWithRetry(self.opener, self.request)
             if res.info().get("Content-Range") != None:
-                return res
+                try:
+                    return res.read()
+                except Exception, e:
+                    syslog(str(e) + " (retry remains %s)" % (retryTime), LOG_ERROR)
+                    retryTime -= 1
+                    continue
+
             retryTime -= 1
 
         if retryTime == -1:

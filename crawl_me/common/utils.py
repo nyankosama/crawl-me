@@ -14,34 +14,45 @@ def urlopenWithRetry(opener, request, timeout=10, retryTime=3):
 
     while retryTime >= 0 :
         try:
-            resp = opener.open(request, timeout=timeout)
-            return resp
+            return opener.open(request, timeout=timeout)
         except socket.timeout, e1:
             retryTime -= 1 
             syslog("http timeout, retry again.(retry remains %s) url=%s" % (retryTime, url), LOG_ERROR)
             continue
         except Exception, e2:
-            syslog(str(Exception) + ":" + str(e2) + ", at url=" + url, LOG_ERROR)
-            break
+            syslog(str(Exception) + ":" + str(e2) + "(retry remains %s)" % (retryTime) +", at url=" + url, LOG_ERROR)
+            retryTime -= 1
+            continue
     return None
 
-def resReadWithRetry(res, timeout=10, retryTime=3):
-    if res == None:
+def resReadWithRetry(opener, request, response, timeout=10, retryTime=3):
+    if isinstance(request, urllib2.Request):
+        url = request.get_full_url()
+    else:
+        url = request
+    needRetry = False
+    if response == None:
         return None
     while retryTime >= 0 :
         try:
-            return res.read()
+            if needRetry == False:
+                return response.read()
+            else:
+                return opener.open(request, timeout=timeout).read()
         except socket.timeout, e1:
             retryTime -= 1 
-            syslog("res read http timeout, retry again.(retry remains %s)" % (retryTime), LOG_ERROR)
+            syslog("response read http timeout, retry again.(retry remains %s), url=%s" % (retryTime, url), LOG_ERROR)
+            needRetry = True
             continue
         except Exception, e2:
-            syslog(str(Exception) + ":" + str(e2), LOG_ERROR)
-            break
+            syslog(str(Exception) + ":" + str(e2) + "(retry remains %s)" % (retryTime) + ", at url=" + url, LOG_ERROR)
+            retryTime -= 1
+            needRetry = True
+            continue
     return None
 
 def urlReadWithRetry(opener, request, timeout=10, retryTime=3):
-    return resReadWithRetry(urlopenWithRetry(opener, request, timeout, retryTime), timeout, retryTime)
+    return resReadWithRetry(opener, request, urlopenWithRetry(opener, request, timeout, retryTime), timeout, retryTime)
 
 def upDiv(a, b):
     return (a+b-1) / b

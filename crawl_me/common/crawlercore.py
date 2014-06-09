@@ -19,6 +19,7 @@ class PictureThread(threading.Thread):
             opener,
             urlList,
             savePath,
+            useRangeHeaders,
             handlerName):
         threading.Thread.__init__(self)
         self.startIndex = startIndex
@@ -27,6 +28,7 @@ class PictureThread(threading.Thread):
         self.splitNum = splitNum
         self.name = handlerName
         self.savePath = savePath
+        self.useRangeHeaders = useRangeHeaders
 
     def run(self):
         syslog(self.getName() + " picture thread start!", LOG_INFO)
@@ -41,13 +43,23 @@ class PictureThread(threading.Thread):
     def __crawl(self, url, picIndex):
         syslog("downloading " + url, LOG_INFO)
         savePath = self.savePath + str(picIndex) + '.jpg'
-        rd = RangeDownloader(self.opener)
-        rd.rangeDownload(url, savePath)
+        if self.useRangeHeaders:
+            rd = RangeDownloader(self.opener)
+            rd.rangeDownload(url, savePath)
+        else:
+            content = urlReadWithRetry(self.opener, url)
+            if content == None:
+                syslog("error! retry too many times, url=" % (url), LOG_ERROR)
+                return
+            file = open(savePath, "w")
+            file.write(content)
+            file.close()
 
 class CrawlerManager(object):
     #conf.url and conf.savePath are required
-    def __init__(self, savePath, opener, urlList):
+    def __init__(self, opener, urlList, savePath, useRangeHeaders):
         self.savePath = savePath
+        self.useRangeHeaders = useRangeHeaders
         self.opener = opener
         self.urlList = urlList
         createDir(savePath)
@@ -67,6 +79,7 @@ class CrawlerManager(object):
                     self.opener,
                     self.urlList,
                     self.savePath,
+                    self.useRangeHeaders,
                     "pictureThread:" + str(count))
             self.PictureThreadList.append(picThread)
             picThread.start()
