@@ -12,7 +12,7 @@ availableModule = [
 def printHelp(parser):
     parser.print_help()
     print ""
-    print "available modules:"
+    print "available plugins:"
     for module in availableModule:
         print "----" + module
     
