@@ -5,8 +5,9 @@ import threading
 import urllib2
 import cookielib
 import copy
+from ..sysconf import *
 
-def urlopenWithRetry(opener, request, timeout=10, retryTime=3):
+def urlopenWithRetry(opener, request, timeout=URL_OPEN_TIMEOUT, retryTime=URL_OPEN_RETRY_TIME):
     if isinstance(request, urllib2.Request):
         url = request.get_full_url()
     else:
@@ -17,15 +18,19 @@ def urlopenWithRetry(opener, request, timeout=10, retryTime=3):
             return opener.open(request, timeout=timeout)
         except socket.timeout, e1:
             retryTime -= 1 
-            syslog("http timeout, retry again.(retry remains %s) url=%s" % (retryTime, url), LOG_ERROR)
+            #syslog("http timeout, retry again.(retry remains %s) url=%s" % (retryTime, url), LOG_ERROR)
             continue
+        except urllib2.HTTPError, error:
+            if error.code == 404:
+                syslog("http error 404 not found, url=%s" % (url), LOG_ERROR)
+                return None
         except Exception, e2:
-            syslog(str(Exception) + ":" + str(e2) + "(retry remains %s)" % (retryTime) +", at url=" + url, LOG_ERROR)
+            syslog(str(e2) + " (retry remains %s)" % (retryTime) +", at url=" + url, LOG_ERROR)
             retryTime -= 1
             continue
     return None
 
-def resReadWithRetry(opener, request, response, timeout=10, retryTime=3):
+def resReadWithRetry(opener, request, response, timeout=URL_OPEN_TIMEOUT, retryTime=URL_OPEN_RETRY_TIME):
     if isinstance(request, urllib2.Request):
         url = request.get_full_url()
     else:
@@ -41,26 +46,26 @@ def resReadWithRetry(opener, request, response, timeout=10, retryTime=3):
                 return opener.open(request, timeout=timeout).read()
         except socket.timeout, e1:
             retryTime -= 1 
-            syslog("response read http timeout, retry again.(retry remains %s), url=%s" % (retryTime, url), LOG_ERROR)
+            #syslog("response read http timeout, retry again.(retry remains %s), url=%s" % (retryTime, url), LOG_ERROR)
             needRetry = True
             continue
         except Exception, e2:
-            syslog(str(Exception) + ":" + str(e2) + "(retry remains %s)" % (retryTime) + ", at url=" + url, LOG_ERROR)
+            syslog(str(e2) + " (retry remains %s)" % (retryTime) + ", at url=" + url, LOG_ERROR)
             retryTime -= 1
             needRetry = True
             continue
     return None
 
-def urlReadWithRetry(opener, request, timeout=10, retryTime=3):
+def urlReadWithRetry(opener, request, timeout=URL_OPEN_TIMEOUT, retryTime=URL_OPEN_RETRY_TIME):
     return resReadWithRetry(opener, request, urlopenWithRetry(opener, request, timeout, retryTime), timeout, retryTime)
 
 def upDiv(a, b):
     return (a+b-1) / b
 
-def getShardingConf(size, maxDownloadCount=40, perferedSplitNum=3):
+def getShardingConf(size, maxThreadCount=MAX_THREAD_COUNT, perferedSplitNum=SPLIT_NUM):
     tmpCount = upDiv(size, perferedSplitNum)
-    if tmpCount > maxDownloadCount:
-        tmpCount = maxDownloadCount
+    if tmpCount > maxThreadCount:
+        tmpCount = maxThreadCount
     
     splitNum = upDiv(size, tmpCount)
     downloadCount = tmpCount

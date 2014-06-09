@@ -3,6 +3,7 @@ import threading
 import socket
 import os
 from utils import *
+from ..sysconf import *
 
 class RangeDownloadThread(threading.Thread):
     def __init__(self, startByte, opener, request, file):
@@ -19,18 +20,19 @@ class RangeDownloadThread(threading.Thread):
             self.file.write(rangeContent)
             self.ret = 0 #download succeed
         else:
-            syslog("error! retry too many times in range:%s" % (self.startByte), LOG_ERROR)
+            syslog("download fail in range:%s, file=%s" % (self.startByte, self.file.name), LOG_ERROR)
             self.ret = -1 #download fail
 
     def __checkRangeHeaderSupport(self):
         retryTime = 10
         while retryTime >= 0:
             res = urlopenWithRetry(self.opener, self.request)
+            if res == None:
+                return None
             if res.info().get("Content-Range") != None:
                 try:
                     return res.read()
                 except Exception, e:
-                    syslog(str(e) + " (retry remains %s)" % (retryTime), LOG_ERROR)
                     retryTime -= 1
                     continue
 
@@ -46,7 +48,7 @@ class RangeDownloader(object):
         self.downloadThreadList = list()
         self.fileList = list()
 
-    def rangeDownload(self, url, savePath, partNum = 5):
+    def rangeDownload(self, url, savePath, partNum = RANGE_PART_NUM):
         self.savePath = savePath
         self.url = url
         fileSize = self.__getFileSize(url)
@@ -82,14 +84,12 @@ class RangeDownloader(object):
             f.close()
 
         if hasError:
-            syslog("download fail because of http timeout, url=%s" % (self.url), LOG_ERROR)
+            syslog("download fail file=%s, url=%s" % (self.savePath, self.url), LOG_ERROR)
             os.remove(self.savePath)
 
     def __getFileSize(self, url):
-        try:
-            res = urlopenWithRetry(self.opener, url)
-        except urllib2.HTTPError, e:
-            syslog("http 404, url=%s" % (url), LOG_INFO)
+        res = urlopenWithRetry(self.opener, url)
+        if res == None:
             return 0
         return int(res.info()['Content-Length'])
 

@@ -11,6 +11,7 @@ from multiprocessing import Process, Value, Lock
 from pyquery import PyQuery as pq
 from rangedownloader import RangeDownloader
 from utils import *
+from ..sysconf import *
 
 class PictureThread(threading.Thread):
     def __init__(self,
@@ -20,6 +21,7 @@ class PictureThread(threading.Thread):
             urlList,
             savePath,
             useRangeHeaders,
+            downloadLock,
             handlerName):
         threading.Thread.__init__(self)
         self.startIndex = startIndex
@@ -29,6 +31,7 @@ class PictureThread(threading.Thread):
         self.name = handlerName
         self.savePath = savePath
         self.useRangeHeaders = useRangeHeaders
+        self.downloadLock = downloadLock
 
     def run(self):
         syslog(self.getName() + " picture thread start!", LOG_INFO)
@@ -38,7 +41,9 @@ class PictureThread(threading.Thread):
             maxIndex = pictureSize
 
         for index in range(self.startIndex - 1, maxIndex):
+            self.downloadLock.acquire()
             self.__crawl(self.urlList[index], index)
+            self.downloadLock.release()
 
     def __crawl(self, url, picIndex):
         syslog("downloading " + url, LOG_INFO)
@@ -57,11 +62,12 @@ class PictureThread(threading.Thread):
 
 class CrawlerManager(object):
     #conf.url and conf.savePath are required
-    def __init__(self, opener, urlList, savePath, useRangeHeaders):
+    def __init__(self, opener, urlList, savePath, useRangeHeaders, maxDownloadCount = MAX_DOWNLOAD_COUNT):
         self.savePath = savePath
         self.useRangeHeaders = useRangeHeaders
         self.opener = opener
         self.urlList = urlList
+        self.downloadLock = threading.Semaphore(maxDownloadCount)
         createDir(savePath)
 
     def startCrawl(self):
@@ -80,6 +86,7 @@ class CrawlerManager(object):
                     self.urlList,
                     self.savePath,
                     self.useRangeHeaders,
+                    self.downloadLock,
                     "pictureThread:" + str(count))
             self.PictureThreadList.append(picThread)
             picThread.start()
