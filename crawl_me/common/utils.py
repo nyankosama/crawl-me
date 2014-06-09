@@ -71,6 +71,12 @@ def getShardingConf(size, maxThreadCount=MAX_THREAD_COUNT, perferedSplitNum=SPLI
     downloadCount = tmpCount
     return [splitNum, downloadCount]
 
+def getPathWithSep(path):
+    if path[len(path) - 1] != os.sep:
+        return path + os.sep
+    else:
+        return path
+
 def createDir(savePath):
     #create dir
     if os.path.isdir(savePath) is not True:

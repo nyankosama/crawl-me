@@ -63,12 +63,12 @@ class PictureThread(threading.Thread):
 class CrawlerManager(object):
     #conf.url and conf.savePath are required
     def __init__(self, opener, urlList, savePath, useRangeHeaders, maxDownloadCount = MAX_DOWNLOAD_COUNT):
-        self.savePath = savePath
+        self.savePath = getPathWithSep(savePath)
         self.useRangeHeaders = useRangeHeaders
         self.opener = opener
         self.urlList = urlList
         self.downloadLock = threading.Semaphore(maxDownloadCount)
-        createDir(savePath)
+        createDir(self.savePath)
 
     def startCrawl(self):
         beginTime = time.time()
