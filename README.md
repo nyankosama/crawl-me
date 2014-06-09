@@ -33,6 +33,7 @@ Usage
         crawl-me gamersky http://www.gamersky.com/ent/201404/352055.shtml ./gamersky-crawl 1 10
 
 2.  下载pixiv中id为3878890的用户的所有作品到pixiv-crawl文件下
+        
         crawl-me pixiv 3878890 ./pixiv-crawl <your pixiv id> <your password>
 
 ### Command line options
