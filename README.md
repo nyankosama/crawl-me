@@ -29,11 +29,13 @@ Installation
 2. ####Windows下安装
 
     首先你需要安装[python2.7](https://www.python.org/download/releases/2.7.7/)和[pip](https://pip.pypa.io/en/latest/installing.html)，python2.7可以通过windows installer安装。安装pip首先下载[get-pip.py](https://bootstrap.pypa.io/get-pip.py)， 然后执行下面命令。
+    
         python get-pip.py
     
     然后，你需要安装pyquery的所依赖的lxml，选择对应的[lxml installer](https://pypi.python.org/pypi/lxml/3.3.5#downloads)下载并安装
     
     最后从github clone 到本地
+    
         $ git clone https://github.com/nyankosama/crawl-me.git
         $ cd crawl-me/
         $ sudo python setup.py install
@@ -53,6 +55,7 @@ Usage
 
 ### Command line options
 1. general help
+
         $ crawl-me -h    
     
         usage: crawl-me [-h] plugin
