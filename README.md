@@ -1,7 +1,14 @@
 crawl-me
 ========
 
-crawl-me 是一个基于plugin的网页图片下载工具。crawl-me通过简单的命令行就可以用你想要的方式下载各个网站下的图片。目前暂时只支持gamersky(游明星空), pixiv（P站），更多plugin尽请期待，欢迎为它添加新的plugin。
+crawl-me是一个基于plugin的轻量级快速网页图片下载工具。crawl-me通过简单的命令行就可以用你想要的方式下载各个网站下的图片。目前暂时只支持gamersky(游明星空), pixiv（P站），更多plugin尽请期待，欢迎为它添加新的plugin。
+
+
+Features
+=======
+
+- 支持Http range-headers 并发分段下载，速度更快
+- 支持添加plugin自定义新的行为，例如添加对微博的支持
 
 
 Installation
