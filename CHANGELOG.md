@@ -1,6 +1,13 @@
 ChangeLog
 =========
 
+0.1.4dev-20140611
+---------
+
+*Date: 2014-06-11*
+
+-  modify the README.md. Now it is consistent with rst format to display on pypi
+
 0.1.4dev-20140610
 ---------
 
