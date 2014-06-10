@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-0.1.4-dev3
+0.1.4dev3
 -----
 
 *Date: 2014-06-10*
@@ -10,14 +10,14 @@ ChangeLog
     - fix the binary write problem in windows platform
 
 
-0.1.4-dev2
+0.1.4dev2
 -----
 
 *Date: 2014-06-10*
 
 - add setuptools install support
 
-0.1.4-dev1
+0.1.4dev1
 ------
 
 *Date: 2014-06-09*
