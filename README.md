@@ -11,6 +11,13 @@ Features
 - 支持添加plugin自定义新的行为，例如添加对微博的支持
 
 
+Available plugins
+============
+
+- pixiv : P站图片下载插件，支持下载某P主所有作品
+- gamersky : 游明星空图库下载插件，支持下载游民星空图库中的某一个专题的所有图片
+
+
 Installation
 ========
 
