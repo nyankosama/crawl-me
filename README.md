@@ -102,6 +102,12 @@ Usage
         optional arguments:
             -h, --help  show this help message and exit
 
+TODO
+========
+
+添加通过pip安装的支持
+
+
 Licenses
 ========
 
