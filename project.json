@@ -10,5 +10,20 @@
     "keywords":"crawler downloader picture pixiv",
     "console_scripts":[
         "crawl-me = crawl_me.common.__main__:main" 
-    ]
+    ],
+    "classifiers": [
+        "Development Status :: 2 - Pre-Alpha",
+        "Environment :: Console",
+        "Environment :: Web Environment",
+        "Intended Audience :: End Users/Desktop",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 2.7",
+        "Topic :: Internet",
+        "Topic :: Internet :: WWW/HTTP",
+        "Topic :: System :: Networking",
+        "Topic :: Utilities"
+    ],
 }

@@ -21,6 +21,7 @@ setup(
     license = proj_conf["license"],
 
     description = proj_conf["description"],
+    classifiers = proj_conf["classifiers"],
     keywords = proj_conf["keywords"],
 
     long_description = README + '\n\n' + CHANGELOG, 
