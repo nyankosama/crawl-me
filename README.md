@@ -54,6 +54,8 @@ Installation
         $ cd crawl-me/
         $ sudo python setup.py install
     
+    在使用crawl-me之前，请确保把{$python-home}/Scripts/ 加入Windows环境变量中
+    
 
 Usage
 ========
