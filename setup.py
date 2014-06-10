@@ -17,7 +17,7 @@ setup(
     version = proj_conf["version"],
 
     packages = find_packages(),
-    install_requires = ['pyquery>=1.2.8'],
+    install_requires = ['pyquery>=1.2.5'],
 
     author = proj_conf["author"],
     author_email = proj_conf["author_email"],
