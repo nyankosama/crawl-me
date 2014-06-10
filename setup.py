@@ -3,8 +3,12 @@ PROJECT_METADATA = "project.json"
 import json, os
 here = os.path.abspath(os.path.dirname(__file__))
 proj_conf = json.loads(open(os.path.join(here, PROJECT_METADATA)).read())
+os.system("pandoc README.md -f markdown -t rst -o README.txt")
+os.system("pandoc CHANGELOG.md -f markdown -t rst -o CHANGELOG.txt")
 README = open(os.path.join(here, 'README.txt')).read()
 CHANGELOG = open(os.path.join(here, 'CHANGELOG.txt')).read()
+os.remove("README.txt")
+os.remove("CHANGELOG.txt")
 
 from setuptools import setup, find_packages
 
