@@ -1,6 +1,6 @@
 PROJECT_METADATA = "project.json"
 
-import json, os
+import json, os, codecs
 here = os.path.abspath(os.path.dirname(__file__))
 proj_conf = json.loads(open(os.path.join(here, PROJECT_METADATA)).read())
 os.system("pandoc README.md -f markdown -t rst -o README.txt")

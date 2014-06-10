@@ -21,9 +21,9 @@ Available plugins
 Installation
 ========
 
-### 通过git安装
+## 通过git安装
 
-1. ####Ubuntu下安装
+### 1. Ubuntu下安装
 
     由于代码依赖了pyquery，安装前请确保libxslt-devel libxml2-devel已被安装
     
@@ -40,7 +40,7 @@ Installation
         $ cd crawl-me/
         $ sudo python setup.py install
 
-2. ####Windows下安装
+### 2. Windows下安装
 
     首先你需要安装[python2.7](https://www.python.org/download/releases/2.7.7/)和[pip](https://pip.pypa.io/en/latest/installing.html)，python2.7可以通过windows installer安装。安装pip首先下载[get-pip.py](https://bootstrap.pypa.io/get-pip.py)， 然后执行下面命令。
     
@@ -60,18 +60,18 @@ Installation
 Usage
 ========
 
-### Examples
+## Examples
 
 1. 下载gamersky下的http://www.gamersky.com/ent/201404/352055.shtml
 的第1页到第10页的所有图片到当前目录的gamersky-crawl文件夹下
     
         crawl-me gamersky http://www.gamersky.com/ent/201404/352055.shtml ./gamersky-crawl 1 10
 
-2.  一键下载P站藤原桑的所有作品到pixiv-crawl文件夹（藤原桑的id是27517）
+2. 一键下载P站藤原桑的所有作品到pixiv-crawl文件夹（藤原桑的id是27517）
         
         crawl-me pixiv 27517 ./pixiv-crawl <your pixiv loginid> <your password>
 
-### Command line options
+## Command line options
 
 1. general help
 
