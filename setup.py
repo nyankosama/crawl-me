@@ -3,6 +3,8 @@ PROJECT_METADATA = "project.json"
 import json, os
 here = os.path.abspath(os.path.dirname(__file__))
 proj_conf = json.loads(open(os.path.join(here, PROJECT_METADATA)).read())
+README = open(os.path.join(here, 'README.txt')).read()
+CHANGELOG = open(os.path.join(here, 'CHANGELOG.txt')).read()
 
 from setuptools import setup, find_packages
 
@@ -20,6 +22,11 @@ setup(
 
     description = proj_conf["description"],
     keywords = proj_conf["keywords"],
+
+    long_description = README + '\n\n' + CHANGELOG, 
+
+    platforms = 'any',
+    include_package_data = True,
 
     entry_points = {
         'console_scripts': proj_conf["console_scripts"]
