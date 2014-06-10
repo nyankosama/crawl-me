@@ -54,5 +54,5 @@ class GamerskyHandler(PageBasedHandler):
             "savePath": args.savePath,
             "beginPage": args.beginPage,
             "endPage": args.endPage,
-            "useRangeHeaders": False
+            "useRangeHeaders": True
         }
