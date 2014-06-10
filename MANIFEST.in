@@ -1,0 +1,4 @@
+include main-cli.py
+include project.json
+include README.md
+include CHANGELOG.md

@@ -1,6 +1,20 @@
 ChangeLog
 =========
 
+0.1.5dev-20140611
+---------
+
+*Date: 2014-06-11*
+
+-  bug fix:pypi data_files
+
+0.1.4
+---------
+
+*Date: 2014-06-11*
+
+-  the latest release
+
 0.1.4dev-20140611
 ---------
 

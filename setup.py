@@ -29,6 +29,8 @@ setup(
     keywords = proj_conf["keywords"],
 
     long_description = README + '\n\n' + CHANGELOG, 
+    
+    data_files=[('', ['project.json'])],
 
     platforms = 'any',
     include_package_data = True,
