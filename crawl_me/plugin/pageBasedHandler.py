@@ -1,9 +1,7 @@
-import threading
-import urllib2
-import copy
 from baseHandler import *
 from ..common.utils import *
-from ..third_party.abc import ABCMeta, abstractmethod
+from ..third_party.abc import abstractmethod
+
 
 class PictureUrlThread(threading.Thread):
     def __init__(self, threadName, pageUrl, handler):
@@ -18,7 +16,8 @@ class PictureUrlThread(threading.Thread):
     def getPictureUrlList(self):
         return self.pictureUrlList
 
-#abstruct base class
+
+# abstruct base class
 class PageBasedHandler(BaseHandler):
     def getUrlList(self, conf):
         pageUrlList = self.getPageUrl(copy.copy(self.opener), conf)
@@ -26,7 +25,7 @@ class PageBasedHandler(BaseHandler):
         threadList = list()
         for index, url in enumerate(pageUrlList):
             th = PictureUrlThread("pictureUrlThread:%s" % (index), url, self)
-            threadList.append(th) 
+            threadList.append(th)
             th.start()
 
         pictureUrlList = list()
@@ -36,9 +35,11 @@ class PageBasedHandler(BaseHandler):
 
         return pictureUrlList
 
-    
-    @abstractmethod
-    def getPageUrl(self, opener, paraConf):pass
 
     @abstractmethod
-    def getPictureUrl(self, pageUrl, opener):pass
+    def getPageUrl(self, opener, paraConf):
+        pass
+
+    @abstractmethod
+    def getPictureUrl(self, pageUrl, opener):
+        pass

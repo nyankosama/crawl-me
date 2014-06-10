@@ -1,27 +1,27 @@
-import urllib2
-import threading
-import socket
-import os
 from utils import *
 from ..sysconf import *
 
+
 class RangeDownloadThread(threading.Thread):
-    def __init__(self, startByte, opener, request, file):
+    def __init__(self, startByte, opener, request, file, lock):
         threading.Thread.__init__(self)
         self.startByte = startByte
         self.request = request
         self.opener = openerDefaultClone(opener)
         self.file = file
+        self.lock = lock
 
     def run(self):
         rangeContent = self.__checkRangeHeaderSupport()
+        self.lock.acquire()
         self.file.seek(self.startByte)
         if rangeContent is not None:
             self.file.write(rangeContent)
-            self.ret = 0 #download succeed
+            self.ret = 0  # download succeed
         else:
             syslog("download fail in range:%s, file=%s" % (self.startByte, self.file.name), LOG_ERROR)
-            self.ret = -1 #download fail
+            self.ret = -1  # download fail
+        self.lock.release()
 
     def __checkRangeHeaderSupport(self):
         retryTime = 10
@@ -39,16 +39,19 @@ class RangeDownloadThread(threading.Thread):
             retryTime -= 1
 
         if retryTime == -1:
-            syslog("rangeHeader not support at this file part, file=%s, url=%s, startByte=%s" % (self.file.name, self.request.get_full_url(), self.startByte), LOG_ERROR)
+            syslog("rangeHeader not support at this file part, file=%s, url=%s, startByte=%s" % (
+                self.file.name, self.request.get_full_url(), self.startByte), LOG_ERROR)
         return None
+
 
 class RangeDownloader(object):
     def __init__(self, opener):
         self.opener = openerDefaultClone(opener)
         self.downloadThreadList = list()
         self.fileList = list()
+        self.lock = threading.Lock()
 
-    def rangeDownload(self, url, savePath, partNum = RANGE_PART_NUM):
+    def rangeDownload(self, url, savePath, partNum=RANGE_PART_NUM):
         self.savePath = savePath
         self.url = url
         fileSize = self.__getFileSize(url)
@@ -57,14 +60,14 @@ class RangeDownloader(object):
         shardingSize = self.__sharding(fileSize, partNum)
         beginByte = 0
         while beginByte < fileSize:
-            file = open(savePath, "w")
+            file = open(savePath, "wb")
             self.fileList.append(file)
             endByte = beginByte + shardingSize - 1
             if (endByte >= fileSize):
                 endByte = fileSize - 1
             req = urllib2.Request(url)
             req.headers['Range'] = 'bytes=%s-%s' % (beginByte, endByte)
-            th = RangeDownloadThread(beginByte, self.opener, req, file)
+            th = RangeDownloadThread(beginByte, self.opener, req, file, self.lock)
             self.downloadThreadList.append(th)
             th.start()
             beginByte += shardingSize

@@ -1,28 +1,20 @@
-import argparse
-import os
-import thread
-import threading
-import signal
 import time
-import urllib2
-import socket
-import Queue
-from multiprocessing import Process, Value, Lock
-from pyquery import PyQuery as pq
+
 from rangedownloader import RangeDownloader
 from utils import *
 from ..sysconf import *
 
+
 class PictureThread(threading.Thread):
     def __init__(self,
-            startIndex,
-            splitNum,
-            opener,
-            urlList,
-            savePath,
-            useRangeHeaders,
-            downloadLock,
-            handlerName):
+                 startIndex,
+                 splitNum,
+                 opener,
+                 urlList,
+                 savePath,
+                 useRangeHeaders,
+                 downloadLock,
+                 handlerName):
         threading.Thread.__init__(self)
         self.startIndex = startIndex
         self.urlList = urlList
@@ -56,13 +48,14 @@ class PictureThread(threading.Thread):
             if content == None:
                 syslog("error! retry too many times, url=" % (url), LOG_ERROR)
                 return
-            file = open(savePath, "w")
+            file = open(savePath, "wb")
             file.write(content)
             file.close()
 
+
 class CrawlerManager(object):
-    #conf.url and conf.savePath are required
-    def __init__(self, opener, urlList, savePath, useRangeHeaders, maxDownloadCount = MAX_DOWNLOAD_COUNT):
+    # conf.url and conf.savePath are required
+    def __init__(self, opener, urlList, savePath, useRangeHeaders, maxDownloadCount=MAX_DOWNLOAD_COUNT):
         self.savePath = getPathWithSep(savePath)
         self.useRangeHeaders = useRangeHeaders
         self.opener = opener
@@ -77,17 +70,17 @@ class CrawlerManager(object):
         count = 1
         picNum = len(self.urlList)
         splitNum = getShardingConf(picNum)[0]
-        
+
         while index <= picNum:
             picThread = PictureThread(
-                    index,
-                    splitNum,
-                    self.opener,
-                    self.urlList,
-                    self.savePath,
-                    self.useRangeHeaders,
-                    self.downloadLock,
-                    "pictureThread:" + str(count))
+                index,
+                splitNum,
+                self.opener,
+                self.urlList,
+                self.savePath,
+                self.useRangeHeaders,
+                self.downloadLock,
+                "pictureThread:" + str(count))
             self.PictureThreadList.append(picThread)
             picThread.start()
             index += splitNum

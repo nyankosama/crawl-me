@@ -9,3 +9,6 @@
 /dist/
 /MANIFEST
 *.egg-info/
+
+#idea files
+/.idea/

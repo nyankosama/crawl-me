@@ -1,13 +1,14 @@
 import argparse
-import sys
+
 from utils import *
-from ..plugin import *
 from crawlercore import CrawlerManager
 
+
 availableModule = [
-        "gamersky",
-        "pixiv",
-        ]
+    "gamersky",
+    "pixiv",
+]
+
 
 def printHelp(parser):
     parser.print_help()
@@ -16,13 +17,14 @@ def printHelp(parser):
     for module in availableModule:
         print "----" + module
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('plugin', help='plugin the crawler uses')
     if len(sys.argv) < 2:
         printHelp(parser)
         sys.exit(0)
-    
+
     if sys.argv[1] == "-h" or sys.argv[1] == "--help":
         printHelp(parser)
         sys.exit(0)

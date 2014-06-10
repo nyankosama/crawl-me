@@ -1,15 +1,15 @@
-import urllib2
-import sys
-import argparse
-import cookielib
 import urllib
+
+from pyquery import PyQuery as pq
+
 from pageBasedHandler import *
 from ..common.utils import *
-from pyquery import PyQuery as pq
+
 
 def getUrlFromId(memberID):
     url = 'http://www.pixiv.net/member_illust.php?id=' + str(memberID)
     return url
+
 
 class PixivHandler(PageBasedHandler):
     def getPageUrl(self, opener, conf):
@@ -27,7 +27,7 @@ class PixivHandler(PageBasedHandler):
         urlList.append(conf["url"])
         for page in range(2, size + 1):
             urlList.append(conf["url"] + "&p=" + str(page))
-        return urlList        
+        return urlList
 
     def getPictureUrl(self, pageUrl, opener):
         urlList = list()
@@ -45,7 +45,7 @@ class PixivHandler(PageBasedHandler):
             href = item.eq(index).find("a").attr("href")
             imgID = href[href.rfind("=") + 1:]
             bigImgUrl = "http://www.pixiv.net/member_illust.php?mode=big&illust_id=" + imgID
-            syslog("opening " + bigImgUrl, LOG_INFO) 
+            syslog("opening " + bigImgUrl, LOG_INFO)
             bigImgContent = urlReadWithRetry(opener, bigImgUrl)
             if bigImgContent == None:
                 syslog("retry too many times at url=" + bigImgUrl, LOG_ERROR)
@@ -57,25 +57,27 @@ class PixivHandler(PageBasedHandler):
             else:
                 urlList.append(imgUrl)
         return urlList
-         
+
     def initOpener(self, conf):
         cookieJar = cookielib.CookieJar()
         cookie = urllib2.HTTPCookieProcessor(cookieJar)
         opener = urllib2.build_opener(cookie)
         opener.addheaders = [
-                ('Referer', 'http://www.pixiv.net/member_illust.php?mode=medium'),
-                ('User-Agent', 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36')]
+            ('Referer', 'http://www.pixiv.net/member_illust.php?mode=medium'),
+            ('User-Agent',
+             'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36')]
         postData = {
-                "mode":"login",
-                "return_to":"/",
-                "pixiv_id":conf["pixivId"],
-                "pass":conf["password"]
-                }
+            "mode": "login",
+            "return_to": "/",
+            "pixiv_id": conf["pixivId"],
+            "pass": conf["password"]
+        }
         login_headers = {
-                'Referer':'https://www.secure.pixiv.net/login.php',
-                'User-Agent':'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36'
-                }
-        request = urllib2.Request("https://www.secure.pixiv.net/login.php", urllib.urlencode(postData), headers = login_headers)
+            'Referer': 'https://www.secure.pixiv.net/login.php',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36'
+        }
+        request = urllib2.Request("https://www.secure.pixiv.net/login.php", urllib.urlencode(postData),
+                                  headers=login_headers)
         syslog("www.pixiv.net logining!", LOG_INFO)
         urlopenWithRetry(opener, request)
         syslog("login completed!", LOG_INFO)
@@ -89,9 +91,9 @@ class PixivHandler(PageBasedHandler):
         parser.add_argument('password', help='your pixiv login password')
         args = parser.parse_args()
         return {
-                "url":getUrlFromId(args.authorId),
-                "savePath":args.savePath,
-                "pixivId":args.pixivId,
-                "password":args.password,
-                "useRangeHeaders":True
-                }
+            "url": getUrlFromId(args.authorId),
+            "savePath": args.savePath,
+            "pixivId": args.pixivId,
+            "password": args.password,
+            "useRangeHeaders": True
+        }

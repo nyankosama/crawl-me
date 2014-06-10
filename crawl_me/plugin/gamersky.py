@@ -1,10 +1,11 @@
-import urllib2
-from pageBasedHandler import *
-from ..common.utils import *
 from pyquery import PyQuery as pq
 
+from pageBasedHandler import *
+from ..common.utils import *
+
+
 class GamerskyHandler(PageBasedHandler):
-    #def getPageUrl(self, baseUrl, opener, beginPage, endPage):
+    # def getPageUrl(self, baseUrl, opener, beginPage, endPage):
     def getPageUrl(self, opener, paraConf):
         urlList = list()
         for page in range(paraConf["beginPage"], paraConf["endPage"] + 1):
@@ -13,7 +14,7 @@ class GamerskyHandler(PageBasedHandler):
             else:
                 crawlUrl = paraConf["url"][0: paraConf["url"].index('.shtml')] + "_" + str(page) + ".shtml"
             urlList.append(crawlUrl)
-        return urlList        
+        return urlList
 
     def getPictureUrl(self, pageUrl, opener):
         urlList = list()
@@ -37,7 +38,7 @@ class GamerskyHandler(PageBasedHandler):
                 continue
 
         return urlList
-         
+
     def initOpener(self, conf):
         self.opener = urllib2.build_opener()
         return self.opener
@@ -49,9 +50,9 @@ class GamerskyHandler(PageBasedHandler):
         parser.add_argument('endPage', help='the page where we end crawling', type=int)
         args = parser.parse_args()
         return {
-                "url":args.url,
-                "savePath":args.savePath,
-                "beginPage":args.beginPage,
-                "endPage":args.endPage,
-                "useRangeHeaders":True
-                }
+            "url": args.url,
+            "savePath": args.savePath,
+            "beginPage": args.beginPage,
+            "endPage": args.endPage,
+            "useRangeHeaders": False
+        }
