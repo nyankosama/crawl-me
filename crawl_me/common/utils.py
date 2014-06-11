@@ -58,10 +58,22 @@ def resReadWithRetry(opener, request, response, timeout=URL_OPEN_TIMEOUT, retryT
             continue
     return None
 
-
 def urlReadWithRetry(opener, request, timeout=URL_OPEN_TIMEOUT, retryTime=URL_OPEN_RETRY_TIME):
     return resReadWithRetry(opener, request, urlopenWithRetry(opener, request, timeout, retryTime), timeout, retryTime)
 
+def checkRangeHeaderSupport(opener, url):
+    retryTime = 3
+    while retryTime >= 0:
+        request = urllib2.Request(url)
+        request.headers['Range'] = 'bytes=%s-' % (0)
+        res = urlopenWithRetry(opener, request)
+        if res == None:
+            syslog("check range headers support fail! url=%s" % (url), LOG_ERROR)
+            return None
+        if res.info().get("Content-Range") != None:
+            return True
+        else:
+            return False
 
 def upDiv(a, b):
     return (a + b - 1) / b

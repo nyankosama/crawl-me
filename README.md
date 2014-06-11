@@ -140,6 +140,7 @@ TODO
 ========
 
 - 添加自动判断Server是否支持HTTP Range headers的支持
+- 支持断点续传
 
 
 Licenses

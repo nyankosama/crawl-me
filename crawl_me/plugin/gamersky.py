@@ -34,7 +34,7 @@ class GamerskyHandler(PageBasedHandler):
                 urlList.append(imgUrl)
                 syslog("imgurl find, url=%s" % (imgUrl))
             except Exception, e:
-                syslog("Exception:" + Exception + ", " + e, LOG_ERROR)
+                syslog("Exception:" + str(Exception) + ", " + str(e), LOG_ERROR)
                 continue
 
         return urlList
@@ -53,6 +53,5 @@ class GamerskyHandler(PageBasedHandler):
             "url": args.url,
             "savePath": args.savePath,
             "beginPage": args.beginPage,
-            "endPage": args.endPage,
-            "useRangeHeaders": True
+            "endPage": args.endPage
         }

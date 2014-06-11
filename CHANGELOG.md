@@ -1,6 +1,13 @@
 ChangeLog
 =========
 
+0.1.7
+---------
+
+*Date: 2014-06-11*
+
+-  add the http range header support auto-check 
+
 0.1.6
 ---------
 

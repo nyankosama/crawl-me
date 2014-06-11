@@ -55,9 +55,8 @@ class PictureThread(threading.Thread):
 
 class CrawlerManager(object):
     # conf.url and conf.savePath are required
-    def __init__(self, opener, urlList, savePath, useRangeHeaders, maxDownloadCount=MAX_DOWNLOAD_COUNT):
+    def __init__(self, opener, urlList, savePath, maxDownloadCount=MAX_DOWNLOAD_COUNT):
         self.savePath = getPathWithSep(savePath)
-        self.useRangeHeaders = useRangeHeaders
         self.opener = opener
         self.urlList = urlList
         self.downloadLock = threading.Semaphore(maxDownloadCount)
@@ -71,6 +70,16 @@ class CrawlerManager(object):
         picNum = len(self.urlList)
         splitNum = getShardingConf(picNum)[0]
 
+        #check http range header support
+        syslog("check server http range header support......", LOG_INFO)
+        useRangeHeaders = checkRangeHeaderSupport(self.opener, self.urlList[0])
+        if useRangeHeaders == None:
+            return
+        elif useRangeHeaders == True:
+            syslog("http range header is supported!", LOG_INFO)
+        else:
+            syslog("http range header is not supported!", LOG_INFO)
+
         while index <= picNum:
             picThread = PictureThread(
                 index,
@@ -78,7 +87,7 @@ class CrawlerManager(object):
                 self.opener,
                 self.urlList,
                 self.savePath,
-                self.useRangeHeaders,
+                useRangeHeaders,
                 self.downloadLock,
                 "pictureThread:" + str(count))
             self.PictureThreadList.append(picThread)

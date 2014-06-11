@@ -43,6 +43,9 @@ def main():
     conf = plugin.initPara(parser)
     opener = plugin.initOpener(conf)
     urlList = plugin.getUrlList(conf)
+    if len(urlList) == 0:
+        syslog("picture not found in the base url", LOG_ERROR)
+        sys.exit(-1)
     syslog("total pictures to crawl:%s" % (len(urlList)))
-    manager = CrawlerManager(opener, urlList, conf["savePath"], conf["useRangeHeaders"])
+    manager = CrawlerManager(opener, urlList, conf["savePath"])
     manager.startCrawl()

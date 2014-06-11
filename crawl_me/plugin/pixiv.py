@@ -94,6 +94,5 @@ class PixivHandler(PageBasedHandler):
             "url": getUrlFromId(args.authorId),
             "savePath": args.savePath,
             "pixivId": args.pixivId,
-            "password": args.password,
-            "useRangeHeaders": True
+            "password": args.password
         }
