@@ -125,10 +125,12 @@ syslogLock = threading.Lock()
 def syslog(text, level=LOG_INFO):
     syslogLock.acquire()
     if has_colours:
-        seq = "\x1b[1;%dm" % (30 + getLogColour(level)) + "[%s]: " % (level_str[level]) + "\x1b[0m"
-        sys.stdout.write(seq)
+        prefix = "\x1b[1;%dm" % (30 + getLogColour(level)) + "[%s]: " % (level_str[level]) + "\x1b[0m"
+        sys.stdout.write(prefix)
         sys.stdout.write(text + "\n")
     else:
+        prefix = "[%s]: " % (level_str[level])
+        sys.stdout.write(prefix)
         sys.stdout.write(text + "\n")
     syslogLock.release()
 
