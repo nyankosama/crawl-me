@@ -4,10 +4,10 @@ import json, os, codecs
 here = os.path.abspath(os.path.dirname(__file__))
 proj_conf = json.loads(open(os.path.join(here, PROJECT_METADATA)).read())
 
-long_description = proj_conf["short_description"]
-if os.path.exists("README.txt") or os.path.exists("CHANGELOG.txt"):
-    README = codecs.open(os.path.join(here, 'README.txt'), "w", "utf8")
-    CHANGELOG = codecs.open(os.path.join(here, 'CHANGELOG.txt'), "w", "utf8")
+long_description = proj_conf["description"]
+if os.path.exists("README.txt") and os.path.exists("CHANGELOG.txt"):
+    README = codecs.open(os.path.join(here, 'README.txt'), "r", "utf8").read()
+    CHANGELOG = codecs.open(os.path.join(here, 'CHANGELOG.txt'), "r", "utf8").read()
     long_description = README + "\n\n" + CHANGELOG
 
 from setuptools import setup, find_packages

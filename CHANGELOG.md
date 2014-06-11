@@ -1,6 +1,13 @@
 ChangeLog
 =========
 
+0.1.5
+---------
+
+*Date: 2014-06-11*
+
+-  bug fix:pip install bug in windows platform
+
 0.1.5dev-20140611
 ---------
 
