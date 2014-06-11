@@ -139,7 +139,6 @@ Usage
 TODO
 ========
 
-- 添加通过pip安装的支持
 - 添加自动判断Server是否支持HTTP Range headers的支持
 
 
