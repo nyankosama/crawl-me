@@ -1,6 +1,13 @@
 ChangeLog
 =========
 
+0.1.6
+---------
+
+*Date: 2014-06-11*
+
+-  bug fix: terminal without colour doesnt display syslog prefix
+
 0.1.5
 ---------
 
