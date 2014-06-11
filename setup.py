@@ -3,12 +3,12 @@ PROJECT_METADATA = "project.json"
 import json, os, codecs
 here = os.path.abspath(os.path.dirname(__file__))
 proj_conf = json.loads(open(os.path.join(here, PROJECT_METADATA)).read())
-os.system("pandoc README.md -f markdown -t rst -o README.txt")
-os.system("pandoc CHANGELOG.md -f markdown -t rst -o CHANGELOG.txt")
-README = open(os.path.join(here, 'README.txt')).read()
-CHANGELOG = open(os.path.join(here, 'CHANGELOG.txt')).read()
-os.remove("README.txt")
-os.remove("CHANGELOG.txt")
+
+long_description = proj_conf["short_description"]
+if os.path.exists("README.txt") or os.path.exists("CHANGELOG.txt"):
+    README = codecs.open(os.path.join(here, 'README.txt'), "w", "utf8")
+    CHANGELOG = codecs.open(os.path.join(here, 'CHANGELOG.txt'), "w", "utf8")
+    long_description = README + "\n\n" + CHANGELOG
 
 from setuptools import setup, find_packages
 
@@ -28,9 +28,7 @@ setup(
     classifiers = proj_conf["classifiers"],
     keywords = proj_conf["keywords"],
 
-    long_description = README + '\n\n' + CHANGELOG, 
-    
-    data_files=[('', ['project.json'])],
+    long_description = long_description,
 
     platforms = 'any',
     include_package_data = True,
