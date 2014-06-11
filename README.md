@@ -108,15 +108,15 @@ Usage
 
         $ crawl-me gamersky -h
         
-        usage: crawl-me [-h] plugin authorId savePath pixivId password
+        usage: crawl-me [-h] plugin url savePath beginPage endPage
 
         positional arguments:
             plugin      plugin the crawler uses
-            authorId    the author id you want to crawl
+            url         your url to crawl
             savePath    the path where the imgs ars saved
-            pixivId     your pixiv login id
-            password    your pixiv login password
-
+            beginPage   the page where we start crawling
+            endPage     the page where we end crawling 
+        
         optional arguments:
             -h, --help  show this help message and exit
 
