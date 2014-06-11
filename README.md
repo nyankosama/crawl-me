@@ -21,40 +21,53 @@ Available plugins
 Installation
 ========
 
+## 通过pip安装
+
+首先请确保已安装python2.7和pip
+
+由于代码依赖了pyquery，linux下请先确保libxslt-devel libxml2-devel已安装，windows下选择对应的[lxml installer](https://pypi.python.org/pypi/lxml/3.3.5#downloads)下载并安装。
+
+以上步骤完成后，只需执行下面的命令
+
+    $ pip install crawl-me
+
+windows平台下使用crawl-me命令之前，请确保把{$python-home}/Scripts/ 加入Windows环境变量中
+
+
 ## 通过git安装
 
 ### 1. Ubuntu下安装
 
-    由于代码依赖了pyquery，安装前请确保libxslt-devel libxml2-devel已被安装
+由于代码依赖了pyquery，安装前请确保libxslt-devel libxml2-devel已被安装
     
-        sudo apt-get install libxml2-dev
-        sudo apt-get install libxslt1-dev 
+    sudo apt-get install libxml2-dev
+    sudo apt-get install libxslt1-dev 
     
-    然后请确保安装了[setuptools](https://pypi.python.org/pypi/setuptools#downloads "setuptools"), Ubuntu下你可以：
+然后请确保安装了[setuptools](https://pypi.python.org/pypi/setuptools#downloads "setuptools"), Ubuntu下你可以：
 
-        sudo apt-get install python-setuptools
+    sudo apt-get install python-setuptools
 
-    然后从github clone source到本地
+然后从github clone source到本地
 
-        $ git clone https://github.com/nyankosama/crawl-me.git
-        $ cd crawl-me/
-        $ sudo python setup.py install
+    $ git clone https://github.com/nyankosama/crawl-me.git
+    $ cd crawl-me/
+    $ sudo python setup.py install
 
 ### 2. Windows下安装
 
-    首先你需要安装[python2.7](https://www.python.org/download/releases/2.7.7/)和[pip](https://pip.pypa.io/en/latest/installing.html)，python2.7可以通过windows installer安装。安装pip首先下载[get-pip.py](https://bootstrap.pypa.io/get-pip.py)， 然后执行下面命令。
+首先你需要安装[python2.7](https://www.python.org/download/releases/2.7.7/)和[pip](https://pip.pypa.io/en/latest/installing.html)，python2.7可以通过windows installer安装。安装pip首先下载[get-pip.py](https://bootstrap.pypa.io/get-pip.py)， 然后执行下面命令。
     
-        python get-pip.py
+    python get-pip.py
     
-    然后，你需要安装pyquery的所依赖的lxml，选择对应的[lxml installer](https://pypi.python.org/pypi/lxml/3.3.5#downloads)下载并安装
+然后，你需要安装pyquery的所依赖的lxml，选择对应的[lxml installer](https://pypi.python.org/pypi/lxml/3.3.5#downloads)下载并安装
     
-    最后从github clone 到本地
+最后从github clone 到本地
     
-        $ git clone https://github.com/nyankosama/crawl-me.git
-        $ cd crawl-me/
-        $ sudo python setup.py install
+    $ git clone https://github.com/nyankosama/crawl-me.git
+    $ cd crawl-me/
+    $ sudo python setup.py install
     
-    在使用crawl-me之前，请确保把{$python-home}/Scripts/ 加入Windows环境变量中
+在使用crawl-me之前，请确保把{$python-home}/Scripts/ 加入Windows环境变量中
     
 
 Usage
