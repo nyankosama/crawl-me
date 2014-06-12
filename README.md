@@ -139,8 +139,13 @@ Usage
 TODO
 ========
 
-- 支持断点续传
-- English Version README
+- Functions:
+    - 支持断点续传
+    - English Version README
+
+- Plugins:
+    - weibo
+    - qq zone
 
 Licenses
 ========
