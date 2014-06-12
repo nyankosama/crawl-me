@@ -2,20 +2,24 @@ import argparse
 
 from utils import *
 from crawlercore import CrawlerManager
-
-
-availableModule = [
-    "gamersky",
-    "pixiv",
-]
+from ..sysconf import *
 
 
 def printHelp(parser):
     parser.print_help()
     print ""
     print "available plugins:"
-    for module in availableModule:
+    for module in AVAILABLE_MODULES:
         print "----" + module
+
+def handlePreArgs(parser):
+    preArg = sys.argv[1]
+    if preArg == "-h" or preArg == "--help":
+        printHelp(parser)
+        sys.exit(0)
+    elif preArg == "-v" or preArg == "--version":
+        print "version: %s" % (PROJECT_CONF["version"]) 
+        sys.exit(0)
 
 
 def main():
@@ -25,9 +29,7 @@ def main():
         printHelp(parser)
         sys.exit(0)
 
-    if sys.argv[1] == "-h" or sys.argv[1] == "--help":
-        printHelp(parser)
-        sys.exit(0)
+    handlePreArgs(parser) 
 
     pluginName = sys.argv[1]
     try:

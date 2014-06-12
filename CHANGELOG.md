@@ -1,6 +1,13 @@
 ChangeLog
 =========
 
+0.1.8dev-20140612
+---------
+
+*Date: 2014-06-12*
+
+-  add -v --version option for main runnable file to show the package version
+
 0.1.7
 ---------
 
