@@ -12,4 +12,4 @@ AVAILABLE_MODULES = [
     "pixiv"
 ]
 
-VERSION = "0.1.8dev-20140615"
+VERSION = "0.1.8dev-20140615-1"

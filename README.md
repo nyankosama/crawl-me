@@ -1,88 +1,88 @@
 crawl-me
 ========
 
-crawl-me是一个基于plugin的轻量级快速网页图片下载工具。crawl-me通过简单的命令行就可以用你想要的方式下载各个网站下的图片。目前暂时只支持gamersky(游明星空), pixiv（P站），更多plugin尽请期待，欢迎为它添加新的plugin。
+[中文README](https://github.com/nyankosama/crawl-me/wiki/%E4%B8%AD%E6%96%87README).
+
+Crawl-me is a light-weight fast plugin based web picture crawler. You can download your favorite pictures via the plugin if the website is supported. For now, the plugins include gamersky and pixiv. If you want to contribute, please just feel free to contact with me.
 
 Fork me on Github :) [https://github.com/nyankosama/crawl-me](https://github.com/nyankosama/crawl-me)
-
 
 Features
 =======
 
-- 支持Http range-headers 并发分段下载，速度更快
-- 支持添加plugin自定义新的行为，例如添加对微博的支持
+- Crawl-me core supports muti-thread downloading using http range-headers, so it's very fast.
+- It's plugin based, so you can free add any plugin you want. 
 
 
 Available plugins
 ============
 
-- pixiv : P站图片下载插件，支持下载某P主所有作品
-- gamersky : 游明星空图库下载插件，支持下载游民星空图库中的某一个专题的所有图片
+- pixiv : This plugin allows you to download any author's paintings in [pixiv](http://www.pixiv.net/) site.
+- gamersky : This plugin supports downloading all pictures in special topic from [gamersky](http://www.gamersky.com/) site.
 
 
 Installation
 ========
 
-## 通过pip安装
+## install via pip
 
-首先请确保已安装python2.7和pip
+Make sure you have already installed [python2.7](https://www.python.org/downloads/) and [pip](https://pypi.python.org/pypi/pip/1.5.6)
 
-由于代码依赖了pyquery，linux下请先确保libxslt-devel libxml2-devel已安装，windows下选择对应的[lxml installer](https://pypi.python.org/pypi/lxml/3.3.5#downloads)下载并安装。
+Due to the fact that package relies on lxml, if your platform is linux, please make sure you have installed lib libxslt-devel libxml2-devel. And for windows please select a suitable [lxml installer](https://pypi.python.org/pypi/lxml/3.3.5#downloads) to install.
 
-以上步骤完成后，只需执行下面的命令
+And then:
 
     $ pip install crawl-me
 
-windows平台下使用crawl-me命令之前，请确保把{$python-home}/Scripts/ 加入Windows环境变量中
+For windows, please add {$python-home}/Scripts/ to systempath
 
+## install via git
 
-## 通过git安装
+### 1. Ubuntu
 
-### 1. Ubuntu下安装
-
-由于代码依赖了pyquery，安装前请确保libxslt-devel libxml2-devel已被安装
+Install the prerequisite library first:
     
     sudo apt-get install libxml2-dev
     sudo apt-get install libxslt1-dev 
     
-然后请确保安装了[setuptools](https://pypi.python.org/pypi/setuptools#downloads "setuptools"), Ubuntu下你可以：
+And then you should install [setuptools](https://pypi.python.org/pypi/setuptools#downloads "setuptools") in order to run the setup.py file
 
     sudo apt-get install python-setuptools
 
-然后从github clone source到本地
+Finally, git clone the source, and install:
 
     $ git clone https://github.com/nyankosama/crawl-me.git
     $ cd crawl-me/
     $ sudo python setup.py install
 
-### 2. Windows下安装
+### 2. Windows
 
-首先你需要安装[python2.7](https://www.python.org/download/releases/2.7.7/)和[pip](https://pip.pypa.io/en/latest/installing.html)，python2.7可以通过windows installer安装。安装pip首先下载[get-pip.py](https://bootstrap.pypa.io/get-pip.py)， 然后执行下面命令。
-    
+Make sure you have already installed [python2.7](https://www.python.org/downloads/) and [pip](https://pypi.python.org/pypi/pip/1.5.6).
+
+You can install python2.7 via windows installer. You can install pip via downloading the [get-pip.py](https://bootstrap.pypa.io/get-pip.py), and run it via python:
+
     python get-pip.py
-    
-然后，你需要安装pyquery的所依赖的lxml，选择对应的[lxml installer](https://pypi.python.org/pypi/lxml/3.3.5#downloads)下载并安装
-    
-最后从github clone 到本地
+
+And then install the prerequisite library lxml. please select a suitable [lxml installer](https://pypi.python.org/pypi/lxml/3.3.5#downloads) to install.
+
+Finally git clone the source, and install:
     
     $ git clone https://github.com/nyankosama/crawl-me.git
     $ cd crawl-me/
     $ sudo python setup.py install
-    
-在使用crawl-me之前，请确保把{$python-home}/Scripts/ 加入Windows环境变量中
-    
+
+For windows, please add {$python-home}/Scripts/ to systempath
 
 Usage
 ========
 
 ## Examples
 
-1. 下载gamersky下的http://www.gamersky.com/ent/201404/352055.shtml
-的第1页到第10页的所有图片到当前目录的gamersky-crawl文件夹下
-    
+1. Download 10 pages pictures at the url of http://www.gamersky.com/ent/201404/352055.shtml in gamersky site, and store the pictures into local direcotry.
+
         crawl-me gamersky http://www.gamersky.com/ent/201404/352055.shtml ./gamersky-crawl 1 10
 
-2. 一键下载P站藤原桑的所有作品到pixiv-crawl文件夹（藤原桑的id是27517）
+2. Download all the paintings of 藤原(Fujiwara, Pixiv ID=27517), and store them into local directory. 
         
         crawl-me pixiv 27517 ./pixiv-crawl <your pixiv loginid> <your password>
 
@@ -140,8 +140,7 @@ TODO
 ========
 
 - Functions:
-    - 支持断点续传
-    - English Version README
+    - support breakpoint resume
 
 - Plugins:
     - weibo
