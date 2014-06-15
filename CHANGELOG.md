@@ -1,6 +1,13 @@
 ChangeLog
 =========
 
+0.1.8dev-20140615
+---------
+
+*Date: 2014-06-15*
+
+- bug fix:-v --version option load project.json fail 
+
 0.1.8dev-20140612
 ---------
 

@@ -18,7 +18,7 @@ def handlePreArgs(parser):
         printHelp(parser)
         sys.exit(0)
     elif preArg == "-v" or preArg == "--version":
-        print "version: %s" % (PROJECT_CONF["version"]) 
+        print "version: %s" % (VERSION) 
         sys.exit(0)
 
 

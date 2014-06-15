@@ -1,4 +1,4 @@
-import os, json
+import os
 
 URL_OPEN_TIMEOUT = 10
 URL_OPEN_RETRY_TIME = 3
@@ -12,6 +12,4 @@ AVAILABLE_MODULES = [
     "pixiv"
 ]
 
-PROJECT_METADATA = "project.json"
-here = os.path.abspath(os.path.dirname(__file__))
-PROJECT_CONF = json.loads(open(os.path.join(here + os.sep + "..", PROJECT_METADATA)).read())
+VERSION = "0.1.8dev-20140615"
