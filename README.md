@@ -26,7 +26,7 @@ Installation
 
 ## install via pip
 
-Make sure you have already installed [python2.7](https://www.python.org/downloads/) and [pip](https://pypi.python.org/pypi/pip/1.5.6)
+Make sure you have already installed [python2.7](https://www.python.org/downloads/) and [pip](https://pypi.python.org/pypi/pip/1.5.6).
 
 Due to the fact that package relies on lxml, if your platform is linux, please make sure you have installed lib libxslt-devel libxml2-devel. And for windows please select a suitable [lxml installer](https://pypi.python.org/pypi/lxml/3.3.5#downloads) to install.
 
@@ -57,7 +57,7 @@ Finally, git clone the source, and install:
 
 ### 2. Windows
 
-Make sure you have already installed [python2.7](https://www.python.org/downloads/) and [pip](https://pypi.python.org/pypi/pip/1.5.6).
+Make sure you have already installed [python2.7](https://www.python.org/downloads/) and [pip](https://pypi.python.org/pypi/pip/1.5.6)
 
 You can install python2.7 via windows installer. You can install pip via downloading the [get-pip.py](https://bootstrap.pypa.io/get-pip.py), and run it via python:
 
