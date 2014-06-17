@@ -11,5 +11,3 @@ AVAILABLE_MODULES = [
     "gamersky",
     "pixiv"
 ]
-
-VERSION = "0.1.8"

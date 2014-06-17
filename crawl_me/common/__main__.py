@@ -3,6 +3,7 @@ import argparse
 from utils import *
 from crawlercore import CrawlerManager
 from ..sysconf import *
+from ..__projconf__ import *
 
 
 def printHelp(parser):
@@ -18,7 +19,7 @@ def handlePreArgs(parser):
         printHelp(parser)
         sys.exit(0)
     elif preArg == "-v" or preArg == "--version":
-        print "version: %s" % (VERSION) 
+        print "version: %s" % (projConf["version"]) 
         sys.exit(0)
 
 
