@@ -6,7 +6,7 @@
     "license":"MIT",
     "version":"0.1.9dev-20140617-1",
 
-    "description":"This is a plugin based picture crawler. Now pixiv/gamersky plugin available!",
+    "description":"This is a plugin based web picture crawler. Now pixiv/gamersky plugin available!",
     "keywords":"crawler downloader picture pixiv",
     "console_scripts":[
         "crawl-me = crawl_me.common.__main__:main" 
