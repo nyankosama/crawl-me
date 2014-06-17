@@ -7,6 +7,7 @@ ChangeLog
 *Date: 2014-06-17*
 
 - add the __projconf__.py into crawl_me package
+- bug fix: pixiv plugin gets page size <= 9
 
 0.1.8
 ---------

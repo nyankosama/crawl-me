@@ -14,18 +14,28 @@ def getUrlFromId(memberID):
 class PixivHandler(PageBasedHandler):
     def getPageUrl(self, opener, conf):
         urlList = list()
-        htmlContent = urlReadWithRetry(opener, conf["url"])
-        if htmlContent == None:
-            syslog("pixiv plugin pageCrawl init fail! timeout retry too many times, url=%s" % (conf["url"]), LOG_ERROR)
-            sys.exit(1)
-        d = pq(htmlContent)
-        pageLi = d(".page-list").eq(0)("li")
-        size = pageLi.size()
-        if size == 0:
-            size = 1
-        syslog("total " + str(size) + " pages", LOG_INFO)
+        openUrl = conf["url"]
+        while True:
+            htmlContent = urlReadWithRetry(opener, openUrl)
+            if htmlContent == None:
+                syslog("pixiv plugin pageCrawl init fail! timeout retry too many times, url=%s" % (conf["url"]), LOG_ERROR)
+                sys.exit(1)
+            d = pq(htmlContent)
+            pageLi = d(".page-list").eq(0)("li")
+        
+            size = pageLi.size()
+            if size <= 5:
+                if size == 0:
+                    pageNum = 1
+                else:
+                    pageNum = int(pageLi.eq(size - 1).html())
+                break
+            else:
+                openUrl = conf["url"] + "&p=" + str(pageLi.eq(size - 1).find("a").html())
+
+        syslog("total " + str(pageNum) + " pages", LOG_INFO)
         urlList.append(conf["url"])
-        for page in range(2, size + 1):
+        for page in range(2, pageNum + 1):
             urlList.append(conf["url"] + "&p=" + str(page))
         return urlList
 
