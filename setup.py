@@ -39,6 +39,8 @@ setup(
     classifiers = proj_conf["classifiers"],
     keywords = proj_conf["keywords"],
 
+    test_suite = 'tests',
+
     long_description = long_description,
 
     platforms = 'any',
