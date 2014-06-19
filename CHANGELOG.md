@@ -1,20 +1,15 @@
 ChangeLog
 =========
 
-0.1.9dev-20140619-1
+0.1.9dev-*
 ---------
 
 *Date: 2014-06-19*
 
-- bug fix:pixiv plugin bug
-
-0.1.9dev-20140617-1
----------
-
-*Date: 2014-06-17*
-
-- add the __projconf__.py into crawl_me package
+- bug fix: pixiv plugin bug
+- add the  __projconf__.py into crawl_me package
 - bug fix: pixiv plugin gets page size <= 9
+- bug fix: some other bugs 
 
 0.1.8
 ---------

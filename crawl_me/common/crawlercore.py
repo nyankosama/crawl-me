@@ -46,7 +46,7 @@ class PictureThread(threading.Thread):
         else:
             content = urlReadWithRetry(self.opener, url)
             if content == None:
-                syslog("error! retry too many times, url=" % (url), LOG_ERROR)
+                syslog("error! retry too many times, url=%s" % (url), LOG_ERROR)
                 return
             file = open(savePath, "wb")
             file.write(content)
