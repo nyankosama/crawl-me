@@ -1,5 +1,7 @@
-crawl-me ![](https://badge.fury.io/py/crawl-me.png)  ![](https://travis-ci.org/nyankosama/crawl-me.svg?branch=master)
+crawl-me 
 ========
+
+![](https://badge.fury.io/py/crawl-me.png) ![](https://travis-ci.org/nyankosama/crawl-me.svg?branch=master)
 
 [中文README](https://github.com/nyankosama/crawl-me/wiki/%E4%B8%AD%E6%96%87README)  
 
