@@ -28,7 +28,11 @@ class PixivHandler(PageBasedHandler):
                 if size == 0:
                     pageNum = 1
                 else:
-                    pageNum = int(pageLi.eq(size - 1).html())
+                    lastLi = pageLi.eq(size - 1)
+                    if lastLi.find("a").html() != None:
+                        pageNum = int(lastLi.find("a").html())
+                    else:
+                        pageNum = int(pageLi.eq(size - 1).html())
                 break
             else:
                 openUrl = conf["url"] + "&p=" + str(pageLi.eq(size - 1).find("a").html())

@@ -4,7 +4,7 @@
     "author_email":"i@nyankosama.com",
     "url":"https://github.com/nyankosama/crawl-me",
     "license":"MIT",
-    "version":"0.1.9dev-20140617-1",
+    "version":"0.1.9dev-20140619-1",
 
     "description":"This is a plugin based web picture crawler. Now pixiv/gamersky plugin available!",
     "keywords":"crawler downloader picture pixiv",
