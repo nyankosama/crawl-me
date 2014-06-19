@@ -1,7 +1,7 @@
-crawl-me [![PyPI version](https://badge.fury.io/py/crawl-me.png)](http://badge.fury.io/py/crawl-me)
+crawl-me ![](https://badge.fury.io/py/crawl-me.png)  ![](https://travis-ci.org/nyankosama/crawl-me.svg?branch=master)
 ========
 
-[中文README](https://github.com/nyankosama/crawl-me/wiki/%E4%B8%AD%E6%96%87README).
+[中文README](https://github.com/nyankosama/crawl-me/wiki/%E4%B8%AD%E6%96%87README)  
 
 Crawl-me is a light-weight fast plugin based web picture crawler. You can download your favorite pictures via the plugin if the website is supported. For now, the plugins include gamersky and pixiv. If you want to contribute, please just feel free to contact with me.
 
