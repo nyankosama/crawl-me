@@ -143,7 +143,6 @@ TODO
 
 - Functions:
     - support breakpoint resume
-    - add Travis CI auto build test
 
 - Plugins:
     - weibo
